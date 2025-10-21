@@ -2,10 +2,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../models/song.dart';
 
-class RankingLineChart extends StatelessWidget {
+class RankingChartSaw extends StatelessWidget {
   final List<Song> songs;
 
-  const RankingLineChart({super.key, required this.songs});
+  const RankingChartSaw({super.key, required this.songs});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +16,14 @@ class RankingLineChart extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.show_chart, color: Color(0xFF6B46C1), size: 20),
+            const Icon(Icons.show_chart, color: Color(0xFF2563EB), size: 20),
             const SizedBox(width: 8),
             const Text(
-              'Grafik Vektor V - WP (Top 20 Lagu)',
+              'Grafik Skor SAW (Top 20 Lagu)',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                color: Color(0xFF6B46C1),
+                color: Color(0xFF2563EB),
               ),
             ),
           ],
@@ -67,15 +67,15 @@ class RankingLineChart extends StatelessWidget {
                 LineChartBarData(
                   spots: List.generate(
                     topSongs.length,
-                    (i) => FlSpot(i.toDouble(), topSongs[i].vectorV),
+                    (i) => FlSpot(i.toDouble(), topSongs[i].score),
                   ),
                   isCurved: true,
-                  color: const Color(0xFF6B46C1),
+                  color: const Color(0xFF2563EB),
                   barWidth: 3,
                   dotData: FlDotData(show: true),
                   belowBarData: BarAreaData(
                     show: true,
-                    color: const Color(0xFF6B46C1).withOpacity(0.2),
+                    color: const Color(0xFF2563EB).withOpacity(0.2),
                   ),
                 ),
               ],
@@ -86,3 +86,4 @@ class RankingLineChart extends StatelessWidget {
     );
   }
 }
+

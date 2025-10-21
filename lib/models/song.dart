@@ -6,7 +6,9 @@ class Song {
   final double production;
   final double price;
 
-  double score = 0;
+  double score = 0;           // Akan diisi dengan vectorV untuk ranking
+  double vectorS = 0;         // Nilai S dari Weighted Product
+  double vectorV = 0;         // Nilai V dari Weighted Product (preferensi relatif)
   Map<String, double> normalized = {};
 
   Song({

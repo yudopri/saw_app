@@ -5,14 +5,14 @@ import '../services/csv_loader.dart';
 import '../services/wp_service.dart';
 import '../widgets/ranking_line_chart.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class WpPage extends StatefulWidget {
+  const WpPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<WpPage> createState() => _WpPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _WpPageState extends State<WpPage> {
   final CsvLoader csvLoader = CsvLoader();
   final WpService wpService = WpService();
 
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          'Perangkingan berdasarkan ${_getCriterionLabel()} berhasil!',
+          'Perangkingan WP berdasarkan ${_getCriterionLabel()} berhasil!',
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
         backgroundColor: const Color(0xFF10B981),
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color(0xFFF5F5F7),
       appBar: AppBar(
         title: Text(
-          ranked ? 'Hasil Perangkingan Weighted Product' : 'Data Lagu Mentah',
+          ranked ? 'Hasil Perangkingan Weighted Product' : 'Data Lagu Mentah (WP)',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
         elevation: 2,
-        backgroundColor: const Color(0xFF6B46C1), // Deep purple untuk tema musik
+        backgroundColor: const Color(0xFF6B46C1), // Deep purple untuk WP
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
@@ -103,11 +103,8 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // FORMULA CARD - Sekarang di dalam scroll
                   _buildFormulaCard(),
-                  // GRAFIK - Sekarang di dalam scroll
                   if (ranked) _buildChartCard(),
-                  // LIST LAGU
                   _buildSongList(),
                 ],
               ),
@@ -190,7 +187,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET FORMULA CARD - Sekarang bisa di-scroll
   Widget _buildFormulaCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
@@ -231,7 +227,6 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 12),
               if (!ranked) ...[
-                // RUMUS UNTUK DATA ASLI (NORMALISASI)
                 _buildFormulaSection(
                   'Kriteria Benefit (Melodi, Lirik, Produksi Lagu):',
                   'r = x / max(x)',
@@ -285,7 +280,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ] else ...[
-                // RUMUS UNTUK HASIL PERHITUNGAN WP
                 _buildFormulaSection(
                   '1. Normalisasi Bobot:',
                   "W' = W / Total W",
@@ -348,7 +342,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET CHART - Sekarang terpisah dan bisa di-scroll
   Widget _buildChartCard() {
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -363,7 +356,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET LIST LAGU - Sekarang terpisah dan bisa di-scroll
   Widget _buildSongList() {
     final displaySongs = songs.length > 100 ? songs.sublist(0, 100) : songs;
 
@@ -577,3 +569,4 @@ class _HomePageState extends State<HomePage> {
     return weights[selectedCriterion] ?? '1.0';
   }
 }
+

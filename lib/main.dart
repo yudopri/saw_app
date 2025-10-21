@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart';
+import 'pages/main_navigation_page.dart';
 
 void main() {
-  runApp(const SawApp());
+  runApp(const RankingApp());
 }
 
-class SawApp extends StatelessWidget {
-  const SawApp({super.key});
+class RankingApp extends StatelessWidget {
+  const RankingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ranking Lagu - SAW',
-      theme: ThemeData(primarySwatch: Colors.indigo),
+      title: 'Ranking Lagu - SAW & WP',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        useMaterial3: true,
+      ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: const MainNavigationPage(),
     );
   }
 }
