@@ -40,6 +40,11 @@ class RankingChart extends StatelessWidget {
             aspectRatio: 1.6,
             child: LineChart(
               LineChartData(
+                lineTouchData: LineTouchData(
+                  enabled: true,
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipColor: (touchedSpot) => Colors.white.withOpacity(0.8)),
+                ),
                 borderData: FlBorderData(show: false),
                 gridData: const FlGridData(show: true),
                 titlesData: FlTitlesData(

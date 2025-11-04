@@ -3,7 +3,7 @@ import '../models/song.dart';
 
 class CsvLoader {
   Future<List<Song>> loadSongs() async {
-    final raw = await rootBundle.loadString('assets/songs.csv');
+    final raw = await rootBundle.loadString('assets/spotify_songs.csv');
     final lines = raw.split('\n').where((line) => line.trim().isNotEmpty).toList();
 
     // Hilangkan header (baris pertama)

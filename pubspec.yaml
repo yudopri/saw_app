@@ -57,6 +57,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/songs.csv
+    - assets/spotify_songs.csv
 
 
   # The following line ensures that the Material Icons font is

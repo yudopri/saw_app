@@ -4,10 +4,12 @@ import '../models/song.dart';
 class WpService {
   // Bobot asli dari setiap kriteria
   final Map<String, double> originalWeights = {
-    'melody': 0.35,
-    'lyric': 0.30,
-    'production': 0.25,
-    'price': 0.10, // cost criterion
+    'popularity': 0.25,
+    'danceability': 0.20,
+    'energy': 0.20,
+    'acousticness': 0.10, // cost criterion
+    'duration': 0.10, // cost criterion
+    'valence': 0.15,
   };
 
   // Bobot ternormalisasi (W / ΣW)
@@ -21,28 +23,33 @@ class WpService {
     _normalizeWeights(selectedCriterion);
 
     // LANGKAH 2: Cari nilai max dan min untuk normalisasi data
-    double maxMelody = songs.map((s) => s.melody).reduce(max);
-    double maxLyric = songs.map((s) => s.lyric).reduce(max);
-    double maxProduction = songs.map((s) => s.production).reduce(max);
-    double minPrice = songs.map((s) => s.price).reduce(min);
+    double maxPopularity = songs.map((s) => s.popularity).reduce(max);
+    double maxDanceability = songs.map((s) => s.danceability).reduce(max);
+    double maxEnergy = songs.map((s) => s.energy).reduce(max);
+    double minAcousticness = songs.map((s) => s.acousticness).reduce(min);
+    double minDuration = songs.map((s) => s.duration).reduce(min);
+    double maxValence = songs.map((s) => s.valence).reduce(max);
 
     // LANGKAH 3: Hitung Vektor S untuk setiap alternatif
     for (var s in songs) {
       // Normalisasi nilai (benefit: xi/max, cost: min/xi)
-      double nMelody = s.melody / maxMelody;
-      double nLyric = s.lyric / maxLyric;
-      double nProduction = s.production / maxProduction;
-      double nPrice = minPrice / s.price; // cost criterion
+      double nPopularity = s.popularity / maxPopularity;
+      double nDanceability = s.danceability / maxDanceability;
+      double nEnergy = s.energy / maxEnergy;
+      double nAcousticness = minAcousticness / s.acousticness; // cost criterion
+      double nDuration = minDuration / s.duration; // cost criterion
+      double nValence = s.valence / maxValence;
 
       s.normalized = {
-        'melody': nMelody,
-        'lyric': nLyric,
-        'production': nProduction,
-        'price': nPrice,
+        'popularity': nPopularity,
+        'danceability': nDanceability,
+        'energy': nEnergy,
+        'acousticness': nAcousticness,
+        'duration': nDuration,
+        'valence': nValence,
       };
 
       // Hitung Vektor S = Π(xi^wi)
-      // S = (melody^w1) × (lyric^w2) × (production^w3) × (price^w4)
       if (selectedCriterion != null && normalizedWeights.containsKey(selectedCriterion)) {
         // Jika filter kriteria, hanya gunakan kriteria tersebut
         s.vectorS = pow(
@@ -52,12 +59,14 @@ class WpService {
       } else {
         // Gunakan semua kriteria
         // Casting setiap pow() ke double
-        double powMelody = pow(nMelody, normalizedWeights['melody']!).toDouble();
-        double powLyric = pow(nLyric, normalizedWeights['lyric']!).toDouble();
-        double powProduction = pow(nProduction, normalizedWeights['production']!).toDouble();
-        double powPrice = pow(nPrice, normalizedWeights['price']!).toDouble();
+        double powPopularity = pow(nPopularity, normalizedWeights['popularity']!).toDouble();
+        double powDanceability = pow(nDanceability, normalizedWeights['danceability']!).toDouble();
+        double powEnergy = pow(nEnergy, normalizedWeights['energy']!).toDouble();
+        double powAcousticness = pow(nAcousticness, normalizedWeights['acousticness']!).toDouble();
+        double powDuration = pow(nDuration, normalizedWeights['duration']!).toDouble();
+        double powValence = pow(nValence, normalizedWeights['valence']!).toDouble();
 
-        s.vectorS = powMelody * powLyric * powProduction * powPrice;
+        s.vectorS = powPopularity * powDanceability * powEnergy * powAcousticness * powDuration * powValence;
       }
     }
 

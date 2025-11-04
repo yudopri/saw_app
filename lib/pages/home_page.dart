@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
         elevation: 2,
-        backgroundColor: const Color(0xFF6B46C1), // Deep purple untuk tema musik
+        backgroundColor: const Color(0xFF6B46C1),
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
@@ -103,11 +103,8 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // FORMULA CARD - Sekarang di dalam scroll
                   _buildFormulaCard(),
-                  // GRAFIK - Sekarang di dalam scroll
                   if (ranked) _buildChartCard(),
-                  // LIST LAGU
                   _buildSongList(),
                 ],
               ),
@@ -164,7 +161,7 @@ class _HomePageState extends State<HomePage> {
             child: DropdownButton<String>(
               value: selectedCriterion,
               hint: Text('Pilih Kriteria',
-                style: TextStyle(color: const Color(0xFF6B46C1), fontSize: 13)),
+                  style: TextStyle(color: const Color(0xFF6B46C1), fontSize: 13)),
               underline: const SizedBox(),
               style: const TextStyle(
                 color: Color(0xFF6B46C1),
@@ -190,7 +187,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET FORMULA CARD - Sekarang bisa di-scroll
   Widget _buildFormulaCard() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
@@ -231,7 +227,6 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 12),
               if (!ranked) ...[
-                // RUMUS UNTUK DATA ASLI (NORMALISASI)
                 _buildFormulaSection(
                   'Kriteria Benefit (Melodi, Lirik, Produksi Lagu):',
                   'r = x / max(x)',
@@ -285,7 +280,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ] else ...[
-                // RUMUS UNTUK HASIL PERHITUNGAN WP
                 _buildFormulaSection(
                   '1. Normalisasi Bobot:',
                   "W' = W / Total W",
@@ -348,7 +342,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET CHART - Sekarang terpisah dan bisa di-scroll
   Widget _buildChartCard() {
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -363,17 +356,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET LIST LAGU - Sekarang terpisah dan bisa di-scroll
   Widget _buildSongList() {
-    final displaySongs = songs.length > 100 ? songs.sublist(0, 100) : songs;
-
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(12),
-      itemCount: displaySongs.length,
+      itemCount: songs.length,
       itemBuilder: (context, i) {
-        final s = displaySongs[i];
+        final s = songs[i];
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 6),
           elevation: 3,
@@ -416,10 +406,10 @@ class _HomePageState extends State<HomePage> {
                     const Divider(),
                     const Text('Nilai Normalisasi:',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('Melodi: ${fmt(s.normalized['melodi'] ?? 0)}'),
-                    Text('Lirik: ${fmt(s.normalized['lirik'] ?? 0)}'),
-                    Text('Produksi: ${fmt(s.normalized['produksi lagu'] ?? 0)}'),
-                    Text('Harga: ${fmt(s.normalized['harga'] ?? 0)}'),
+                    Text('Melodi: ${fmt(s.normalized['melody'] ?? 0)}'),
+                    Text('Lirik: ${fmt(s.normalized['lyric'] ?? 0)}'),
+                    Text('Produksi: ${fmt(s.normalized['production'] ?? 0)}'),
+                    Text('Harga: ${fmt(s.normalized['price'] ?? 0)}'),
                     if (ranked) ...[
                       const Divider(),
                       Text('Vektor S (Preferensi): ${fmt(s.vectorS, 4)}',
@@ -566,13 +556,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // ✅ FIXED: Ubah key dari bahasa Indonesia ke bahasa Inggris
   String _getSelectedWeight() {
     if (selectedCriterion == null) return '1.0';
     final weights = {
-      'melodi': '0.35',
-      'lirik': '0.30',
-      'produksi lagu': '0.25',
-      'harga': '0.10',
+      'melody': '0.35',
+      'lyric': '0.30',
+      'production': '0.25',
+      'price': '0.10',
     };
     return weights[selectedCriterion] ?? '1.0';
   }

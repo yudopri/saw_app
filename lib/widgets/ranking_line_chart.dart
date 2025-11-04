@@ -9,7 +9,7 @@ class RankingLineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topSongs = songs.take(20).toList();
+    final topSongs = songs.take(100).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,7 +19,7 @@ class RankingLineChart extends StatelessWidget {
             const Icon(Icons.show_chart, color: Color(0xFF6B46C1), size: 20),
             const SizedBox(width: 8),
             const Text(
-              'Grafik Vektor V - WP (Top 20 Lagu)',
+              'Grafik Vektor V - WP (Top 100 Lagu)',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
@@ -33,6 +33,11 @@ class RankingLineChart extends StatelessWidget {
           height: 220,
           child: LineChart(
             LineChartData(
+              lineTouchData: LineTouchData(
+              enabled: true,
+              touchTooltipData: LineTouchTooltipData(
+              getTooltipColor: (touchedSpot) => Colors.white.withOpacity(0.8)),
+              ),
               borderData: FlBorderData(show: true),
               gridData: FlGridData(show: true, drawVerticalLine: false),
               titlesData: FlTitlesData(
@@ -42,16 +47,13 @@ class RankingLineChart extends StatelessWidget {
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
-                    interval: 1,
+                    interval: 5,
                     getTitlesWidget: (value, meta) {
                       final index = value.toInt();
                       if (index < 0 || index >= topSongs.length) return const SizedBox();
-                      return Transform.rotate(
-                        angle: -0.5,
-                        child: Text(
-                          topSongs[index].title.split(' ').first,
-                          style: const TextStyle(fontSize: 10),
-                        ),
+                      return Text(
+                        '${index + 1}',
+                        style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
                       );
                     },
                   ),

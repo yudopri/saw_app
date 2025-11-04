@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/song.dart';
@@ -25,10 +26,16 @@ class _WpPageState extends State<WpPage> {
   NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
 
   final List<Map<String, String>> criteria = [
-    {'key': 'melody', 'label': 'Kualitas Melodi'},
-    {'key': 'lyric', 'label': 'Kualitas Lirik'},
-    {'key': 'production', 'label': 'Produksi Lagu'},
-    {'key': 'price', 'label': 'Harga'},
+    {'key': 'popularity', 'label': 'Popularitas'},
+    {'key': 'danceability', 'label': 'Danceability'},
+    {'key': 'energy', 'label': 'Energy'},
+    {'key': 'acousticness', 'label': 'Acousticness'},
+    {'key': 'duration', 'label': 'Durasi'},
+    {'key': 'valence', 'label': 'Valence'},
+    {'key': 'duration', 'label': 'Durasi'},
+    {'key': 'valence', 'label': 'Valence'},
+    {'key': 'duration', 'label': 'Durasi'},
+    {'key': 'valence', 'label': 'Kebahagiaan'},
     {'key': 'all', 'label': 'Gabungan Semua Kriteria'},
   ];
 
@@ -161,7 +168,7 @@ class _WpPageState extends State<WpPage> {
             child: DropdownButton<String>(
               value: selectedCriterion,
               hint: Text('Pilih Kriteria',
-                style: TextStyle(color: const Color(0xFF6B46C1), fontSize: 13)),
+                  style: TextStyle(color: const Color(0xFF6B46C1), fontSize: 13)),
               underline: const SizedBox(),
               style: const TextStyle(
                 color: Color(0xFF6B46C1),
@@ -228,16 +235,16 @@ class _WpPageState extends State<WpPage> {
               const SizedBox(height: 12),
               if (!ranked) ...[
                 _buildFormulaSection(
-                  'Kriteria Benefit (Melodi, Lirik, Produksi Lagu):',
+                  'Kriteria Manfaat (Popularitas, Kesesuaian Menari, Energi, Kegembiraan):',
                   'r = x / max(x)',
-                  'Nilai dibagi nilai maksimum',
+                  'Nilai dibagi dengan nilai tertinggi',
                   const Color(0xFF7C3AED),
                 ),
                 const SizedBox(height: 8),
                 _buildFormulaSection(
-                  'Kriteria Cost (Harga):',
+                  'Kriteria Biaya (Akustik, Durasi):',
                   'r = min(x) / x',
-                  'Nilai minimum dibagi nilai',
+                  'Nilai terendah dibagi dengan nilai saat ini',
                   const Color(0xFF7C3AED),
                 ),
                 const SizedBox(height: 8),
@@ -256,7 +263,7 @@ class _WpPageState extends State<WpPage> {
                           const Icon(Icons.pie_chart, color: Color(0xFF6B21A8), size: 18),
                           const SizedBox(width: 6),
                           Text(
-                            'Bobot Kriteria:',
+                            'Bobot Setiap Kriteria:',
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
@@ -270,10 +277,12 @@ class _WpPageState extends State<WpPage> {
                         spacing: 8,
                         runSpacing: 6,
                         children: [
-                          _buildWeightChip('Melodi', '35%', Colors.deepPurple),
-                          _buildWeightChip('Lirik', '30%', Colors.purple),
-                          _buildWeightChip('Produksi', '25%', Colors.pink),
-                          _buildWeightChip('Harga', '10%', Colors.amber),
+                          _buildWeightChip('Popularitas', '25%', Colors.deepPurple),
+                          _buildWeightChip('Kesesuaian Menari', '20%', Colors.purple),
+                          _buildWeightChip('Energi', '20%', Colors.pink),
+                          _buildWeightChip('Akustik', '10%', Colors.amber),
+                          _buildWeightChip('Durasi', '10%', Colors.orange),
+                          _buildWeightChip('Kegembiraan', '15%', Colors.indigo),
                         ],
                       ),
                     ],
@@ -281,32 +290,34 @@ class _WpPageState extends State<WpPage> {
                 ),
               ] else ...[
                 _buildFormulaSection(
-                  '1. Normalisasi Bobot:',
+                  'Langkah 1: Normalisasi Bobot',
                   "W' = W / Total W",
-                  'Bobot dibagi total bobot (Total = 1.0)',
+                  'Bobot dibagi dengan total semua bobot (hasilnya = 1.0)',
                   Colors.green[700]!,
                 ),
                 const SizedBox(height: 8),
                 _buildFormulaSectionMultiLine(
-                  '2. Hitung Vektor S (Preferensi):',
+                  'Langkah 2: Hitung Vektor S (Nilai Preferensi)',
                   selectedCriterion == 'all' || selectedCriterion == null
                       ? [
-                    "S = (Melodi ^ 0.35) x",
-                    "    (Lirik ^ 0.30) x",
-                    "    (Produksi Lagu ^ 0.25) x",
-                    "    (Harga ^ 0.10)"
+                    "S = (Popularitas ^ 0.25) ×",
+                    "    (Kesesuaian Menari ^ 0.20) ×",
+                    "    (Energi ^ 0.20) ×",
+                    "    (Akustik ^ 0.10) ×",
+                    "    (Durasi ^ 0.10) ×",
+                    "    (Kegembiraan ^ 0.15)"
                   ]
                       : ["S = (${_getCriterionLabel()} ^ ${_getSelectedWeight()})"],
                   selectedCriterion == 'all' || selectedCriterion == null
-                      ? 'Perkalian pangkat semua kriteria'
-                      : 'Hanya kriteria ${_getCriterionLabel()}',
+                      ? 'Hasil perkalian pangkat dari semua kriteria'
+                      : 'Hanya menggunakan kriteria ${_getCriterionLabel()}',
                   Colors.green[700]!,
                 ),
                 const SizedBox(height: 8),
                 _buildFormulaSection(
-                  '3. Hitung Vektor V (Preferensi Relatif):',
+                  'Langkah 3: Hitung Vektor V (Preferensi Relatif)',
                   'V = S / Total S',
-                  'Total semua V = 1.0, V tertinggi = terbaik',
+                  'Total semua V = 1.0, nilai V tertinggi = lagu terbaik',
                   Colors.green[700]!,
                 ),
                 const SizedBox(height: 8),
@@ -323,7 +334,7 @@ class _WpPageState extends State<WpPage> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Ranking berdasarkan nilai V tertinggi',
+                          'Peringkat ditentukan dari nilai V yang paling tinggi',
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -357,15 +368,13 @@ class _WpPageState extends State<WpPage> {
   }
 
   Widget _buildSongList() {
-    final displaySongs = songs.length > 100 ? songs.sublist(0, 100) : songs;
-
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(12),
-      itemCount: displaySongs.length,
+      itemCount: songs.length,
       itemBuilder: (context, i) {
-        final s = displaySongs[i];
+        final s = songs[i];
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 6),
           elevation: 3,
@@ -399,31 +408,220 @@ class _WpPageState extends State<WpPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Nilai Asli:',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('Melodi: ${s.melody}'),
-                    Text('Lirik: ${s.lyric}'),
-                    Text('Produksi: ${s.production}'),
-                    Text('Harga: ${currency.format(s.price)}'),
+                    const Text('📊 Nilai Asli:',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Text('Tingkat Popularitas: ${s.popularity}'),
+                    Text('Kesesuaian untuk Menari: ${s.danceability}'),
+                    Text('Tingkat Energi: ${s.energy}'),
+                    Text('Tingkat Akustik: ${s.acousticness}'),
+                    Text('Lama Durasi: ${(s.duration / 1000).toStringAsFixed(2)} detik'),
+                    Text('Tingkat Kegembiraan: ${s.valence}'),
                     const Divider(),
-                    const Text('Nilai Normalisasi:',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text('Melodi: ${fmt(s.normalized['melodi'] ?? 0)}'),
-                    Text('Lirik: ${fmt(s.normalized['lirik'] ?? 0)}'),
-                    Text('Produksi: ${fmt(s.normalized['produksi lagu'] ?? 0)}'),
-                    Text('Harga: ${fmt(s.normalized['harga'] ?? 0)}'),
+                    const Text('🧮 Nilai Ternormalisasi (Cara Hitung):',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                    const SizedBox(height: 4),
                     if (ranked) ...[
+                      _buildNormalizationDetail(
+                        'Popularitas',
+                        s.popularity,
+                        songs.map((x) => x.popularity).reduce((a, b) => a > b ? a : b),
+                        s.normalized['popularity'] ?? 0,
+                        true,
+                      ),
+                      _buildNormalizationDetail(
+                        'Kesesuaian Menari',
+                        s.danceability,
+                        songs.map((x) => x.danceability).reduce((a, b) => a > b ? a : b),
+                        s.normalized['danceability'] ?? 0,
+                        true,
+                      ),
+                      _buildNormalizationDetail(
+                        'Energi',
+                        s.energy,
+                        songs.map((x) => x.energy).reduce((a, b) => a > b ? a : b),
+                        s.normalized['energy'] ?? 0,
+                        true,
+                      ),
+                      _buildNormalizationDetail(
+                        'Akustik',
+                        s.acousticness,
+                        songs.map((x) => x.acousticness).reduce((a, b) => a < b ? a : b),
+                        s.normalized['acousticness'] ?? 0,
+                        false,
+                      ),
+                      _buildNormalizationDetail(
+                        'Durasi',
+                        s.duration,
+                        songs.map((x) => x.duration).reduce((a, b) => a < b ? a : b),
+                        s.normalized['duration'] ?? 0,
+                        false,
+                      ),
+                      _buildNormalizationDetail(
+                        'Kegembiraan',
+                        s.valence,
+                        songs.map((x) => x.valence).reduce((a, b) => a > b ? a : b),
+                        s.normalized['valence'] ?? 0,
+                        true,
+                      ),
                       const Divider(),
-                      Text('Vektor S (Preferensi): ${fmt(s.vectorS, 4)}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 13,
-                              color: Color(0xFF059669))),
-                      Text('Vektor V (Relatif): ${fmt(s.vectorV, 4)}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Color(0xFF7C3AED))),
+                      const Text('✨ Perhitungan Metode WP:',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      const SizedBox(height: 8),
+
+                      // Perhitungan Vektor S
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.purple.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.purple.shade300, width: 2),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Langkah 1: Hitung Vektor S',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Color(0xFF6B21A8),
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Rumus: S = Π(Nilai Ternormalisasi ^ Bobot)',
+                              style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'S = (${fmt(s.normalized['popularity'] ?? 0, 4)} ^ 0.25) ×',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            Text(
+                              '    (${fmt(s.normalized['danceability'] ?? 0, 4)} ^ 0.20) ×',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            Text(
+                              '    (${fmt(s.normalized['energy'] ?? 0, 4)} ^ 0.20) ×',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            Text(
+                              '    (${fmt(s.normalized['acousticness'] ?? 0, 4)} ^ 0.10) ×',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            Text(
+                              '    (${fmt(s.normalized['duration'] ?? 0, 4)} ^ 0.10) ×',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            Text(
+                              '    (${fmt(s.normalized['valence'] ?? 0, 4)} ^ 0.15)',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            const Divider(height: 12),
+                            Text(
+                              'S = ${fmt(pow(s.normalized['popularity'] ?? 0, 0.25).toDouble(), 4)} × ${fmt(pow(s.normalized['danceability'] ?? 0, 0.20).toDouble(), 4)} × ${fmt(pow(s.normalized['energy'] ?? 0, 0.20).toDouble(), 4)} × ${fmt(pow(s.normalized['acousticness'] ?? 0, 0.10).toDouble(), 4)} × ${fmt(pow(s.normalized['duration'] ?? 0, 0.10).toDouble(), 4)} × ${fmt(pow(s.normalized['valence'] ?? 0, 0.15).toDouble(), 4)}',
+                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Colors.purple.shade100,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Vektor S =',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  ),
+                                  Text(
+                                    '${fmt(s.vectorS, 4)}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: Colors.purple.shade700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Perhitungan Vektor V
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.green.shade50,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.green.shade300, width: 2),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Langkah 2: Hitung Vektor V',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Color(0xFF047857),
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Rumus: V = S / ΣS (Total Semua S)',
+                              style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Total S = ${fmt(songs.fold(0.0, (sum, song) => sum + song.vectorS), 4)}',
+                              style: const TextStyle(fontSize: 11),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'V = ${fmt(s.vectorS, 4)} / ${fmt(songs.fold(0.0, (sum, song) => sum + song.vectorS), 4)}',
+                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade100,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Vektor V (Skor Akhir) =',
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  ),
+                                  Text(
+                                    '${fmt(s.vectorV, 4)}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: Color(0xFF047857),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ] else ...[
+                      Text('Popularitas: ${fmt(s.normalized['popularity'] ?? 0)}'),
+                      Text('Kesesuaian Menari: ${fmt(s.normalized['danceability'] ?? 0)}'),
+                      Text('Energi: ${fmt(s.normalized['energy'] ?? 0)}'),
+                      Text('Akustik: ${fmt(s.normalized['acousticness'] ?? 0)}'),
+                      Text('Durasi: ${fmt(s.normalized['duration'] ?? 0)}'),
+                      Text('Kegembiraan: ${fmt(s.normalized['valence'] ?? 0)}'),
                     ]
                   ],
                 ),
@@ -538,7 +736,6 @@ class _WpPageState extends State<WpPage> {
       ],
     );
   }
-
   Widget _buildWeightChip(String label, String weight, MaterialColor color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -558,15 +755,54 @@ class _WpPageState extends State<WpPage> {
     );
   }
 
+  Widget _buildNormalizationDetail(String label, double value, double compareValue, double result, bool isBenefit) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.purple.shade50,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.purple.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              isBenefit
+                  ? '= $value / $compareValue (nilai ÷ nilai tertinggi)'
+                  : '= $compareValue / $value (nilai terendah ÷ nilai)',
+              style: const TextStyle(fontSize: 12, color: Colors.black87),
+            ),
+            Text(
+              '= ${fmt(result, 4)}',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Colors.purple.shade700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   String _getSelectedWeight() {
     if (selectedCriterion == null) return '1.0';
     final weights = {
-      'melodi': '0.35',
-      'lirik': '0.30',
-      'produksi lagu': '0.25',
-      'harga': '0.10',
+      'popularity': '0.25',
+      'danceability': '0.20',
+      'energy': '0.20',
+      'acousticness': '0.10',
+      'duration': '0.10',
+      'valence': '0.15',
     };
     return weights[selectedCriterion] ?? '1.0';
   }
 }
-

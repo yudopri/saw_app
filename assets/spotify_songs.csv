@@ -1,0 +1,96 @@
+track_name,artist_name,popularity,danceability,energy,acousticness,duration_ms,valence
+Blinding Lights,The Weeknd,95,0.514,0.730,0.00146,200040,0.334
+Shape of You,Ed Sheeran,93,0.825,0.652,0.581,233713,0.931
+Someone You Loved,Lewis Capaldi,92,0.500,0.405,0.751,182160,0.446
+Dance Monkey,Tones and I,91,0.824,0.595,0.693,209438,0.513
+Rockstar,Post Malone,90,0.587,0.535,0.124,218147,0.119
+Sunflower,Post Malone,89,0.760,0.479,0.562,157560,0.764
+One Dance,Drake,88,0.792,0.618,0.402,173987,0.612
+Closer,The Chainsmokers,87,0.748,0.524,0.414,244960,0.333
+Bad Guy,Billie Eilish,86,0.740,0.430,0.339,194088,0.560
+Señorita,Shawn Mendes,85,0.760,0.545,0.041,190960,0.750
+Old Town Road,Lil Nas X,84,0.888,0.623,0.323,113000,0.725
+Perfect,Ed Sheeran,83,0.599,0.448,0.231,263400,0.364
+Stay,The Kid LAROI,82,0.591,0.764,0.043,141806,0.478
+Levitating,Dua Lipa,81,0.702,0.825,0.000238,203064,0.915
+Watermelon Sugar,Harry Styles,80,0.548,0.816,0.122,174000,0.557
+Save Your Tears,The Weeknd,79,0.678,0.826,0.0333,215627,0.679
+drivers license,Olivia Rodrigo,78,0.444,0.428,0.775,242014,0.131
+good 4 u,Olivia Rodrigo,77,0.563,0.664,0.0103,178147,0.675
+Heat Waves,Glass Animals,76,0.761,0.525,0.441,238805,0.557
+Peaches,Justin Bieber,75,0.677,0.696,0.215,198082,0.464
+Montero,Lil Nas X,74,0.593,0.711,0.046,137707,0.739
+Beggin,Måneskin,73,0.714,0.800,0.105,211560,0.589
+Industry Baby,Lil Nas X,72,0.733,0.597,0.015,212000,0.448
+Shivers,Ed Sheeran,71,0.825,0.785,0.0296,207160,0.902
+Bad Habits,Ed Sheeran,70,0.806,0.897,0.044,230747,0.543
+Kiss Me More,Doja Cat,69,0.764,0.626,0.340,208653,0.709
+Essence,Wizkid,68,0.782,0.692,0.464,244993,0.522
+Mood,24kGoldn,67,0.700,0.722,0.239,140526,0.721
+positions,Ariana Grande,66,0.737,0.802,0.135,172693,0.401
+Therefore I Am,Billie Eilish,65,0.752,0.571,0.359,174280,0.431
+34+35,Ariana Grande,64,0.820,0.734,0.088,173711,0.637
+Dynamite,BTS,63,0.746,0.765,0.023,199053,0.737
+Life Goes On,BTS,62,0.688,0.395,0.524,207679,0.192
+Butter,BTS,61,0.749,0.775,0.00103,164442,0.945
+Permission to Dance,BTS,60,0.727,0.836,0.0721,182933,0.903
+My Universe,Coldplay,59,0.653,0.697,0.0144,226880,0.762
+Higher Power,Coldplay,58,0.845,0.842,0.00694,210493,0.583
+Happier Than Ever,Billie Eilish,57,0.394,0.152,0.824,298493,0.119
+Your Power,Billie Eilish,56,0.350,0.256,0.905,244013,0.125
+Lost Cause,Billie Eilish,55,0.732,0.498,0.458,215733,0.477
+NDA,Billie Eilish,54,0.528,0.387,0.638,169200,0.210
+Everybody Talks,Neon Trees,53,0.553,0.921,0.00334,177147,0.872
+Sweater Weather,The Neighbourhood,52,0.609,0.440,0.739,240400,0.360
+Mr. Brightside,The Killers,51,0.349,0.927,0.00144,222973,0.214
+Somebody That I Used to Know,Gotye,50,0.333,0.573,0.011,244627,0.256
+Pumped Up Kicks,Foster The People,49,0.733,0.711,0.00851,239600,0.960
+Radioactive,Imagine Dragons,48,0.609,0.794,0.000236,187000,0.344
+Believer,Imagine Dragons,47,0.778,0.779,0.00186,204346,0.589
+Thunder,Imagine Dragons,46,0.609,0.434,0.0102,187146,0.461
+Whatever It Takes,Imagine Dragons,45,0.636,0.860,0.00524,201560,0.314
+Natural,Imagine Dragons,44,0.542,0.861,0.000203,189413,0.293
+Follow You,Imagine Dragons,43,0.666,0.834,0.0203,184493,0.698
+Cutthroat,Imagine Dragons,42,0.508,0.970,0.00419,158040,0.380
+Enemy,Imagine Dragons,41,0.743,0.759,0.0566,173533,0.418
+Bones,Imagine Dragons,40,0.685,0.807,0.0197,164227,0.564
+Sharks,Imagine Dragons,39,0.737,0.842,0.00468,191067,0.473
+Symphony,Clean Bandit,38,0.461,0.536,0.00604,212147,0.238
+Rather Be,Clean Bandit,37,0.708,0.876,0.0257,227680,0.613
+Rockabye,Clean Bandit,36,0.720,0.765,0.0614,251088,0.741
+Solo,Clean Bandit,35,0.844,0.785,0.0218,221973,0.588
+I Miss You,Clean Bandit,34,0.687,0.640,0.292,214493,0.310
+Beautiful People,Ed Sheeran,33,0.694,0.658,0.441,197920,0.698
+South of the Border,Ed Sheeran,32,0.768,0.664,0.162,204640,0.739
+Cross Me,Ed Sheeran,31,0.727,0.611,0.180,206173,0.721
+Take Me Back to London,Ed Sheeran,30,0.859,0.707,0.0491,189573,0.672
+Best Part of Me,Ed Sheeran,29,0.631,0.626,0.367,243893,0.535
+Antisocial,Ed Sheeran,28,0.788,0.654,0.121,161707,0.537
+Remember The Name,Ed Sheeran,27,0.771,0.735,0.0653,227307,0.668
+Feels,Calvin Harris,26,0.807,0.631,0.0396,223413,0.498
+One Kiss,Calvin Harris,25,0.796,0.798,0.00327,214947,0.594
+Promises,Calvin Harris,24,0.704,0.716,0.0127,218573,0.421
+Giant,Calvin Harris,23,0.685,0.626,0.0121,229333,0.490
+Outside,Calvin Harris,22,0.499,0.924,0.0119,228680,0.178
+Sweet Nothing,Calvin Harris,21,0.468,0.670,0.00862,213680,0.444
+Slide,Calvin Harris,20,0.698,0.551,0.271,229960,0.576
+Rollin,Calvin Harris,19,0.871,0.621,0.0321,191973,0.711
+Summer,Calvin Harris,18,0.583,0.955,0.000379,234893,0.347
+Blame,Calvin Harris,17,0.627,0.904,0.00127,212947,0.457
+Open Wide,Calvin Harris,16,0.808,0.748,0.0138,178707,0.643
+This Is What You Came For,Calvin Harris,15,0.567,0.623,0.0348,236760,0.508
+My Way,Calvin Harris,14,0.558,0.791,0.00402,224720,0.408
+Heatstroke,Calvin Harris,13,0.804,0.716,0.186,200013,0.768
+Nuh Ready Nuh Ready,Calvin Harris,12,0.822,0.747,0.0586,196200,0.778
+Faking It,Calvin Harris,11,0.661,0.631,0.0758,200413,0.595
+Skrt On Me,Calvin Harris,10,0.696,0.675,0.0331,211667,0.567
+Cash Out,Calvin Harris,9,0.745,0.731,0.0442,193493,0.621
+Party Like a Rockstar,Shop Boyz,8,0.821,0.737,0.217,227360,0.813
+Crank That,Soulja Boy,7,0.892,0.703,0.137,225280,0.721
+Lip Gloss,Lil Mama,6,0.773,0.622,0.154,218040,0.836
+Pop Lock and Drop It,Huey,5,0.845,0.684,0.187,234520,0.789
+Buy U a Drank,T-Pain,4,0.718,0.539,0.0718,246600,0.644
+Bartender,T-Pain,3,0.773,0.639,0.0952,251733,0.701
+Can't Believe It,T-Pain,2,0.708,0.628,0.0441,238960,0.612
+I'm Sprung,T-Pain,1,0.665,0.594,0.144,268133,0.534
+

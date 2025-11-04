@@ -3,41 +3,51 @@ import '../models/song.dart';
 
 class SawService {
   final Map<String, double> weights = {
-    'melody': 0.35,
-    'lyric': 0.30,
-    'production': 0.25,
-    'price': 0.10, // cost criterion
+    'popularity': 0.25,
+    'danceability': 0.20,
+    'energy': 0.20,
+    'acousticness': 0.10, // cost criterion
+    'duration': 0.10, // cost criterion
+    'valence': 0.15,
   };
 
   void calculate(List<Song> songs, {String? selectedCriterion}) {
     if (songs.isEmpty) return;
 
-    double maxMelody = songs.map((s) => s.melody).reduce(max);
-    double maxLyric = songs.map((s) => s.lyric).reduce(max);
-    double maxProduction = songs.map((s) => s.production).reduce(max);
-    double minPrice = songs.map((s) => s.price).reduce(min);
+    double maxPopularity = songs.map((s) => s.popularity).reduce(max);
+    double maxDanceability = songs.map((s) => s.danceability).reduce(max);
+    double maxEnergy = songs.map((s) => s.energy).reduce(max);
+    double minAcousticness = songs.map((s) => s.acousticness).reduce(min);
+    double minDuration = songs.map((s) => s.duration).reduce(min);
+    double maxValence = songs.map((s) => s.valence).reduce(max);
 
     for (var s in songs) {
-      double nMelody = s.melody / maxMelody;
-      double nLyric = s.lyric / maxLyric;
-      double nProduction = s.production / maxProduction;
-      double nPrice = minPrice / s.price;
+      double nPopularity = s.popularity / maxPopularity;
+      double nDanceability = s.danceability / maxDanceability;
+      double nEnergy = s.energy / maxEnergy;
+      double nAcousticness = minAcousticness / s.acousticness;
+      double nDuration = minDuration / s.duration;
+      double nValence = s.valence / maxValence;
 
       s.normalized = {
-        'melody': nMelody,
-        'lyric': nLyric,
-        'production': nProduction,
-        'price': nPrice,
+        'popularity': nPopularity,
+        'danceability': nDanceability,
+        'energy': nEnergy,
+        'acousticness': nAcousticness,
+        'duration': nDuration,
+        'valence': nValence,
       };
 
       // Jika ada filter, hanya kriteria itu yang dipakai.
       if (selectedCriterion != null && weights.containsKey(selectedCriterion)) {
         s.score = s.normalized[selectedCriterion]! * weights[selectedCriterion]!;
       } else {
-        s.score = (nMelody * weights['melody']!) +
-            (nLyric * weights['lyric']!) +
-            (nProduction * weights['production']!) +
-            (nPrice * weights['price']!);
+        s.score = (nPopularity * weights['popularity']!) +
+            (nDanceability * weights['danceability']!) +
+            (nEnergy * weights['energy']!) +
+            (nAcousticness * weights['acousticness']!) +
+            (nDuration * weights['duration']!) +
+            (nValence * weights['valence']!);
       }
     }
 
